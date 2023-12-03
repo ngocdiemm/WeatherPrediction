@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Meteorological Data</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <h1>My Meteorological Data</h1>
+    
+    <div class="chart-container">
+        <canvas id="temperatureChart"></canvas>
+    </div>
+
+    <div class="data" id="weatherData">
+        <h2>Weather Information</h2>
+        
+        <div class="feature-container">
+            <div class="feature">
+                <p><strong>☀️ Temperature:</strong></p>
+                
+                <span id="temperature"></span>
+            </div>
+        </div>
+
+        <div class="feature-container">
+            <div class="feature">
+                <p><strong>💧 Humidity:</strong></p>
+                
+                <span id="humidity"></span>
+            </div>
+        </div>
+
+        <div class="feature-container">
+            <div class="feature">
+                <p><strong> ➡️ Wind:</strong></p>
+                
+                <span id="wind"></span>
+            </div>
+        </div>
+
+        <div class="feature-container">
+            <div class="feature">
+                <p><strong>📊 Pressure:</strong></p>
+                
+                <span id="pressure"></span>
+            </div>
+        </div>
+
+        <div class="feature-container">
+            <div class="feature">
+                <p><strong> 👁️ Rain:</strong></p>
+                
+                <span id="rain"></span>
+            </div>
+        </div>
+
+        <div class="feature-container">
+            <div class="feature">
+                <p><strong> 👁️ Visibility:</strong></p>
+                
+                <span id="visibility"></span>
+            </div>
+        </div>
+
+        <div class="feature-container">
+            <div class="feature">
+                <p><strong>☁️ Cloud:</strong></p>
+                
+                <span id="cloud"></span>
+            </div>
+        </div>
+
+        <div class="feature-container">
+            <div class="feature">
+                <p><strong>🌐 Latitude:</strong></p>
+                
+                <span id="latitude"></span>
+            </div>
+        </div>
+
+        <div class="feature-container">
+            <div class="feature">
+                <p><strong>🌐 Longitude:</strong></p>
+                
+                <span id="longitude"></span>
+            </div>
+        </div>
+
+        <div class="feature-container">
+            <div class="feature">
+                <p><strong>⏰ UTC Time:</strong></p>
+                
+                <span id="utc_time"></span>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // Function to update weather data on the page
+            function updateWeatherData(data) {
+                // Iterate through each feature and update the HTML
+                $(".feature p strong").each(function () {
+                    var featureName = $(this).text().replace(":", "").trim();
+                    var featureValue = data[featureName.toLowerCase()];
+
+                    // Update the text content of the corresponding <span> element
+                    $(this).parent().siblings("span").text(": " + featureValue);
+                });
+            }
+
+            // Simulate receiving data from Jetson Nano through an API
+            // Replace this with your actual API endpoint and data structure
+            const apiUrl = "https://your-api-endpoint";
+            $.post(apiUrl, function (data) {
+                // Update weather data on the page
+                updateWeatherData(data);
+            });
+        });
+    </script>
+
+</body>
+</html>
