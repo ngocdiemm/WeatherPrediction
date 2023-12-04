@@ -1,8 +1,7 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 urlpatterns = [
-    #path('', views.getData),
-    path('',views.postData),
-    path('view', include('weatherapp.urls'))
+    path('', views.getData),
+    path('add/',views.postData)
 ]
