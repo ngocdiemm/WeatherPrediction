@@ -6,6 +6,7 @@
     <title>My Meteorological Data</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
     <h1>My Meteorological Data</h1>
@@ -38,7 +39,6 @@
         <div id="rainChart"></div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function () {
             // Function to update weather data on the page
@@ -53,105 +53,100 @@
                 });
             }
 
-            //const apiUrl = "{% your_api_endpoint %}";
-            //$.post(apiUrl, function (data) {
-                // Update weather data on the page
-                //updateWeatherData(data);
-                // Dummy data for testing
-                var dummyData = {
-                    timestamps: [1, 2, 3, 4, 5],
-                    temperatures: [20, 22, 25, 18, 23],
-                    wind: [10, 12, 15, 8, 13],
-                    visibility: [1000, 800, 1200, 900, 1100],
-                    cloud: [50, 60, 40, 70, 55],
-                    humidity: [75, 80, 70, 85, 78],
-                    pressure: [1015, 1010, 1020, 1005, 1018],
-                    rain: [0, 0, 5, 2, 0]
-                };
+            // Dummy data for testing
+            var dummyData = {
+                timestamps: [1, 2, 3, 4, 5],
+                temperatures: [20, 22, 25, 18, 23],
+                wind: [10, 12, 15, 8, 13],
+                visibility: [1000, 800, 1200, 900, 1100],
+                cloud: [50, 60, 40, 70, 55],
+                humidity: [75, 80, 70, 85, 78],
+                pressure: [1015, 1010, 1020, 1005, 1018],
+                rain: [0, 0, 5, 2, 0]
+            };
 
-                // Update weather data on the page
-                updateWeatherData(dummyData);
+            // Update weather data on the page
+            updateWeatherData(dummyData);
 
-                // Extract data for each feature
-                var timestamps = dummyData.timestamps;
-                var temperatures = dummyData.temperatures;
-                var wind = dummyData.wind;
-                var visibility = dummyData.visibility;
-                var cloud = dummyData.cloud;
-                var humidity = dummyData.humidity;
-                var pressure = dummyData.pressure;
-                var rain = dummyData.rain;
+            // Extract data for each feature
+            var timestamps = dummyData.timestamps;
+            var temperatures = dummyData.temperatures;
+            var wind = dummyData.wind;
+            var visibility = dummyData.visibility;
+            var cloud = dummyData.cloud;
+            var humidity = dummyData.humidity;
+            var pressure = dummyData.pressure;
+            var rain = dummyData.rain;
 
-                // Extract data for each feature
-                //var timestamps = /*data.timestamps*/ [1,2,3]; 
-                //var temperatures = /*data.temperatures*/ [1,2,3]; 
-                //var wind = /*data.wind*/[1,2,3]; 
-                //var visibility = /*data.visibility*/[1,2,3]; 
-                //var cloud = /*data.cloud*/[1,2,3];
-                //var humidity = /*data.humidity*/[1,2,3]; 
-                //var pressure = /*data.pressure*/[1,2,3]; 
-                //var rain = /*data.rain*/[1,2,3]; 
+            // Create a combined line chart for temperature, wind, visibility, and cloud
+            createCombinedLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud);
 
-                // Create line charts for temperature, wind, visibility, and cloud
-                createLineChart('temperatureChart', 'Temperature', timestamps, temperatures);
-                createLineChart('windChart', 'Wind', timestamps, wind);
-                createLineChart('visibilityChart', 'Visibility', timestamps, visibility);
-                createLineChart('cloudChart', 'Cloud', timestamps, cloud);
-
-                // Create bar charts for humidity, pressure, and rain
-                createBarChart('humidityChart', 'Humidity', timestamps, humidity);
-                createBarChart('pressureChart', 'Pressure', timestamps, pressure);
-                createBarChart('rainChart', 'Rain', timestamps, rain);
-            //});
-            
-            // Function to create a Highcharts line chart
-            function createLineChart(containerId, title, categories, data) {
-                Highcharts.chart(containerId, {
-                    chart: {
-                        type: 'line'
-                    },
-                    title: {
-                        text: title + ' Chart'
-                    },
-                    xAxis: {
-                        categories: categories
-                    },
-                    yAxis: {
-                        title: {
-                            text: title
-                        }
-                    },
-                    series: [{
-                        name: title,
-                        data: data
-                    }]
-                });
-            }
-
-            // Function to create a Highcharts bar chart
-            function createBarChart(containerId, title, categories, data) {
-                Highcharts.chart(containerId, {
-                    chart: {
-                        type: 'bar'
-                    },
-                    title: {
-                        text: title + ' Chart'
-                    },
-                    xAxis: {
-                        categories: categories
-                    },
-                    yAxis: {
-                        title: {
-                            text: title
-                        }
-                    },
-                    series: [{
-                        name: title,
-                        data: data
-                    }]
-                });
-            }
+            // Create a combined bar chart for humidity, pressure, and rain
+            createCombinedBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain);
         });
+
+        // Function to create a Highcharts line chart
+        function createCombinedLineChart(containerId, title, categories, temperatures, wind, visibility, cloud) {
+            Highcharts.chart(containerId, {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: title + ' Line Chart'
+                },
+                xAxis: {
+                    categories: categories
+                },
+                yAxis: {
+                    title: {
+                        text: 'Values'
+                    }
+                },
+                series: [{
+                    name: 'Temperature',
+                    data: temperatures
+                }, {
+                    name: 'Wind',
+                    data: wind
+                }, {
+                    name: 'Visibility',
+                    data: visibility
+                }, {
+                    name: 'Cloud',
+                    data: cloud
+                }]
+            });
+        }
+
+        // Function to create a Highcharts combined bar chart
+        function createCombinedBarChart(containerId, title, categories, humidity, pressure, rain) {
+            Highcharts.chart(containerId, {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: title + ' Bar Chart'
+                },
+                xAxis: {
+                    categories: categories
+                },
+                yAxis: {
+                    title: {
+                        text: 'Values'
+                    }
+                },
+                series: [{
+                    name: 'Humidity',
+                    data: humidity
+                }, {
+                    name: 'Pressure',
+                    data: pressure
+                }, {
+                    name: 'Rain',
+                    data: rain
+                }]
+            });
+        }
     </script>
 </body>
 </html>
