@@ -7,37 +7,27 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .chart-container {
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
     <h1>My Meteorological Data</h1>
     
-    <div class="chart-container">
-        <div id="temperatureChart"></div>
-    </div>
-
-    <div class="chart-container">
-        <div id="windChart"></div>
-    </div>
-
-    <div class="chart-container">
-        <div id="visibilityChart"></div>
-    </div>
-
-    <div class="chart-container">
-        <div id="cloudChart"></div>
-    </div>
-
-    <div class="chart-container">
-        <div id="humidityChart"></div>
-    </div>
-
-    <div class="chart-container">
-        <div id="pressureChart"></div>
-    </div>
-
-    <div class="chart-container">
-        <div id="rainChart"></div>
-    </div>
+    <div class="chart-container" id="temperatureChart"></div>
+    <div class="chart-container" id="windChart"></div>
+    <div class="chart-container" id="visibilityChart"></div>
+    <div class="chart-container" id="cloudChart"></div>
+    <div class="chart-container" id="humidityChart"></div>
+    <div class="chart-container" id="pressureChart"></div>
+    <div class="chart-container" id="rainChart"></div>
 
     <script>
         $(document).ready(function () {
@@ -89,7 +79,8 @@
         function createCombinedLineChart(containerId, title, categories, temperatures, wind, visibility, cloud) {
             Highcharts.chart(containerId, {
                 chart: {
-                    type: 'line'
+                    type: 'line',
+                    width: $(window).width() * 2 / 3 // Set the chart width to two-thirds of the screen width
                 },
                 title: {
                     text: title + ' Line Chart'
@@ -122,7 +113,8 @@
         function createCombinedBarChart(containerId, title, categories, humidity, pressure, rain) {
             Highcharts.chart(containerId, {
                 chart: {
-                    type: 'bar'
+                    type: 'bar',
+                    width: $(window).width() * 2 / 3 // Set the chart width to two-thirds of the screen width
                 },
                 title: {
                     text: title + ' Bar Chart'
@@ -147,6 +139,12 @@
                 }]
             });
         }
+
+        // Update chart position when the window is resized
+        $(window).resize(function () {
+            createCombinedLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud);
+            createCombinedBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain);
+        });
     </script>
 </body>
 </html>
