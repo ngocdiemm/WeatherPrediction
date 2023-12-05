@@ -7,20 +7,17 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        .chart-container {
-            margin: auto;
-        }
-    </style>
+    
 </head>
 <body>
     <h1>My Meteorological Data</h1>
     
+
+    <div class="chart-container" id="locationContainer">
+        <p><strong>Longitude:</strong> <span></span></p>
+        <p><strong>Latitude:</strong> <span></span></p>
+        <p><strong>UTC Time:</strong> <span></span></p>
+    </div>
     <div class="chart-container" id="temperatureChart"></div>
     <div class="chart-container" id="windChart"></div>
     <div class="chart-container" id="visibilityChart"></div>
@@ -28,18 +25,18 @@
     <div class="chart-container" id="humidityChart"></div>
     <div class="chart-container" id="pressureChart"></div>
     <div class="chart-container" id="rainChart"></div>
-
+    
     <script>
         $(document).ready(function () {
             // Function to update weather data on the page
             function updateWeatherData(data) {
                 // Iterate through each feature and update the HTML
-                $(".feature p strong").each(function () {
+                $(".chart-container p strong").each(function () {
                     var featureName = $(this).text().replace(":", "").trim();
                     var featureValue = data[featureName.toLowerCase()];
 
                     // Update the text content of the corresponding <span> element
-                    $(this).parent().siblings("span").text(": " + featureValue);
+                    $(this).parent().find("span").text(": " + featureValue);
                 });
             }
 
@@ -52,7 +49,10 @@
                 cloud: [50, 60, 40, 70, 55],
                 humidity: [75, 80, 70, 85, 78],
                 pressure: [1015, 1010, 1020, 1005, 1018],
-                rain: [0, 0, 5, 2, 0]
+                rain: [0, 0, 5, 2, 0],
+                longitude: 10.99,
+                latitude: 44.34,
+                utc_time: [1661870592, 1661874592, 1661878592, 1661882592, 1661886592]
             };
 
             // Update weather data on the page
@@ -67,16 +67,22 @@
             var humidity = dummyData.humidity;
             var pressure = dummyData.pressure;
             var rain = dummyData.rain;
+            var latitude = dummyData.latitude;
+            var longitude = dummyData.longitude;
+            var utc_time = dummyData.utc_time;
 
             // Create a combined line chart for temperature, wind, visibility, and cloud
-            createCombinedLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud);
+            createCombinedLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud, 'Temperature (K)', 'Wind Speed (m/s)', 'Visibility (m)', 'Cloud (%)');
 
             // Create a combined bar chart for humidity, pressure, and rain
-            createCombinedBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain);
+            createCombinedBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain, 'Humidity (%)', 'Pressure (hPa)', 'Rain (mm)');
+
+            // Update location container with longitude, latitude, and UTC time
+            updateLocationContainer(longitude, latitude, utc_time);
         });
 
         // Function to create a Highcharts line chart
-        function createCombinedLineChart(containerId, title, categories, temperatures, wind, visibility, cloud) {
+        function createCombinedLineChart(containerId, title, categories, temperatures, wind, visibility, cloud, tempUnit, windUnit, visUnit, cloudUnit) {
             Highcharts.chart(containerId, {
                 chart: {
                     type: 'line',
@@ -88,29 +94,60 @@
                 xAxis: {
                     categories: categories
                 },
-                yAxis: {
+                yAxis: [{
                     title: {
-                        text: 'Values'
+                        text: 'Temperature (K)'
                     }
-                },
+                }, {
+                    title: {
+                        text: 'Wind Speed (m/s)'
+                    },
+                    opposite: true
+                }, {
+                    title: {
+                        text: 'Visibility (m)'
+                    },
+                    opposite: true
+                }, {
+                    title: {
+                        text: 'Cloud (%)'
+                    },
+                    opposite: true
+                }],
                 series: [{
                     name: 'Temperature',
-                    data: temperatures
+                    data: temperatures,
+                    yAxis: 0,
+                    tooltip: {
+                        valueSuffix: ' ' + tempUnit
+                    }
                 }, {
                     name: 'Wind',
-                    data: wind
+                    data: wind,
+                    yAxis: 1,
+                    tooltip: {
+                        valueSuffix: ' ' + windUnit
+                    }
                 }, {
                     name: 'Visibility',
-                    data: visibility
+                    data: visibility,
+                    yAxis: 2,
+                    tooltip: {
+                        valueSuffix: ' ' + visUnit
+                    }
                 }, {
                     name: 'Cloud',
-                    data: cloud
+                    data: cloud,
+                    yAxis: 3,
+                    tooltip: {
+                        valueSuffix: ' ' + cloudUnit
+                    }
                 }]
             });
         }
 
         // Function to create a Highcharts combined bar chart
-        function createCombinedBarChart(containerId, title, categories, humidity, pressure, rain) {
+        function createCombinedBarChart(containerId, title, categories, humidity, pressure, rain, humUnit, pressUnit, rainUnit) {
             Highcharts.chart(containerId, {
                 chart: {
                     type: 'bar',
@@ -122,28 +159,57 @@
                 xAxis: {
                     categories: categories
                 },
-                yAxis: {
+                yAxis: [{
                     title: {
-                        text: 'Values'
+                        text: 'Humidity (%)'
                     }
-                },
+                }, {
+                    title: {
+                        text: 'Pressure (hPa)'
+                    },
+                    opposite: true
+                }, {
+                    title: {
+                        text: 'Rain (mm)'
+                    },
+                    opposite: true
+                }],
                 series: [{
                     name: 'Humidity',
-                    data: humidity
+                    data: humidity,
+                    yAxis: 0,
+                    tooltip: {
+                        valueSuffix: ' ' + humUnit
+                    }
                 }, {
                     name: 'Pressure',
-                    data: pressure
+                    data: pressure,
+                    yAxis: 1,
+                    tooltip: {
+                        valueSuffix: ' ' + pressUnit
+                    }
                 }, {
                     name: 'Rain',
-                    data: rain
+                    data: rain,
+                    yAxis: 2,
+                    tooltip: {
+                        valueSuffix: ' ' + rainUnit
+                    }
                 }]
             });
         }
 
+        // Function to update location container with longitude, latitude, and UTC time
+        function updateLocationContainer(longitude, latitude, utcTime) {
+            $("#locationContainer p:nth-child(1) span").text(": " + longitude.toFixed(2)); // Display longitude
+            $("#locationContainer p:nth-child(2) span").text(": " + latitude.toFixed(2));  // Display latitude
+            $("#locationContainer p:nth-child(3) span").text(": " + new Date(utcTime[0] * 1000).toLocaleString());  // Display UTC time
+        }
+
         // Update chart position when the window is resized
         $(window).resize(function () {
-            createCombinedLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud);
-            createCombinedBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain);
+            createCombinedLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud, 'Temperature (K)', 'Wind Speed (m/s)', 'Visibility (m)', 'Cloud (%)');
+            createCombinedBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain, 'Humidity (%)', 'Pressure (hPa)', 'Rain (mm)');
         });
     </script>
 </body>

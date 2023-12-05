@@ -17,7 +17,29 @@ h1 {
     font-size: 48px;
 }
 
-.chart-container {
-    width: 100%;
-    margin-bottom: 20px;
+.container-wrapper {
+    display: flex;
 }
+
+#locationContainer {
+    width: 20%;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 10px;
+    border-radius: 10px; /* Adjust the radius as needed */
+}
+.chart-container {
+    border-radius: 10px; 
+    width: 80%;
+    margin-left: 250px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    
+     
+}
+
+
+
+
+
