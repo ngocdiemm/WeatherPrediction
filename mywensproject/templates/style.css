@@ -1,0 +1,23 @@
+body {
+    background: url('https://wallpapers.com/images/featured/lo-fi-mvqzjym6ie17firw.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    background: linear-gradient(to right, #5ee7df, #ff6b6b);
+    color: white;
+    padding: 20px;
+    margin: 0;
+    font-family: cursive;
+    font-weight: bold;
+    font-size: 48px;
+}
+
+.chart-container {
+    width: 100%;
+    margin-bottom: 20px;
+}

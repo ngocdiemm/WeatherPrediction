@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Meteorological Data</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+    <h1>My Meteorological Data</h1>
+    
+    <div class="chart-container">
+        <div id="temperatureChart"></div>
+    </div>
+
+    <div class="chart-container">
+        <div id="windChart"></div>
+    </div>
+
+    <div class="chart-container">
+        <div id="visibilityChart"></div>
+    </div>
+
+    <div class="chart-container">
+        <div id="cloudChart"></div>
+    </div>
+
+    <div class="chart-container">
+        <div id="humidityChart"></div>
+    </div>
+
+    <div class="chart-container">
+        <div id="pressureChart"></div>
+    </div>
+
+    <div class="chart-container">
+        <div id="rainChart"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Function to update weather data on the page
+            function updateWeatherData(data) {
+                // Iterate through each feature and update the HTML
+                $(".feature p strong").each(function () {
+                    var featureName = $(this).text().replace(":", "").trim();
+                    var featureValue = data[featureName.toLowerCase()];
+
+                    // Update the text content of the corresponding <span> element
+                    $(this).parent().siblings("span").text(": " + featureValue);
+                });
+            }
+
+            //const apiUrl = "{% your_api_endpoint %}";
+            //$.post(apiUrl, function (data) {
+                // Update weather data on the page
+                //updateWeatherData(data);
+                // Dummy data for testing
+                var dummyData = {
+                    timestamps: [1, 2, 3, 4, 5],
+                    temperatures: [20, 22, 25, 18, 23],
+                    wind: [10, 12, 15, 8, 13],
+                    visibility: [1000, 800, 1200, 900, 1100],
+                    cloud: [50, 60, 40, 70, 55],
+                    humidity: [75, 80, 70, 85, 78],
+                    pressure: [1015, 1010, 1020, 1005, 1018],
+                    rain: [0, 0, 5, 2, 0]
+                };
+
+                // Update weather data on the page
+                updateWeatherData(dummyData);
+
+                // Extract data for each feature
+                var timestamps = dummyData.timestamps;
+                var temperatures = dummyData.temperatures;
+                var wind = dummyData.wind;
+                var visibility = dummyData.visibility;
+                var cloud = dummyData.cloud;
+                var humidity = dummyData.humidity;
+                var pressure = dummyData.pressure;
+                var rain = dummyData.rain;
+
+                // Extract data for each feature
+                //var timestamps = /*data.timestamps*/ [1,2,3]; 
+                //var temperatures = /*data.temperatures*/ [1,2,3]; 
+                //var wind = /*data.wind*/[1,2,3]; 
+                //var visibility = /*data.visibility*/[1,2,3]; 
+                //var cloud = /*data.cloud*/[1,2,3];
+                //var humidity = /*data.humidity*/[1,2,3]; 
+                //var pressure = /*data.pressure*/[1,2,3]; 
+                //var rain = /*data.rain*/[1,2,3]; 
+
+                // Create line charts for temperature, wind, visibility, and cloud
+                createLineChart('temperatureChart', 'Temperature', timestamps, temperatures);
+                createLineChart('windChart', 'Wind', timestamps, wind);
+                createLineChart('visibilityChart', 'Visibility', timestamps, visibility);
+                createLineChart('cloudChart', 'Cloud', timestamps, cloud);
+
+                // Create bar charts for humidity, pressure, and rain
+                createBarChart('humidityChart', 'Humidity', timestamps, humidity);
+                createBarChart('pressureChart', 'Pressure', timestamps, pressure);
+                createBarChart('rainChart', 'Rain', timestamps, rain);
+            //});
+            
+            // Function to create a Highcharts line chart
+            function createLineChart(containerId, title, categories, data) {
+                Highcharts.chart(containerId, {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: title + ' Chart'
+                    },
+                    xAxis: {
+                        categories: categories
+                    },
+                    yAxis: {
+                        title: {
+                            text: title
+                        }
+                    },
+                    series: [{
+                        name: title,
+                        data: data
+                    }]
+                });
+            }
+
+            // Function to create a Highcharts bar chart
+            function createBarChart(containerId, title, categories, data) {
+                Highcharts.chart(containerId, {
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: title + ' Chart'
+                    },
+                    xAxis: {
+                        categories: categories
+                    },
+                    yAxis: {
+                        title: {
+                            text: title
+                        }
+                    },
+                    series: [{
+                        name: title,
+                        data: data
+                    }]
+                });
+            }
+        });
+    </script>
+</body>
+</html>

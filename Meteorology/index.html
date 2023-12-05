@@ -118,6 +118,32 @@
             $.post(apiUrl, function (data) {
                 // Update weather data on the page
                 updateWeatherData(data);
+
+                // Chart.js initialization for temperature
+                var temperatureData = data.temperature; // Replace with your actual temperature data
+                var timeLabels = data.time; // Replace with your actual time labels
+
+                var ctx = document.getElementById('temperatureChart').getContext('2d');
+                var temperatureChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: timeLabels,
+                        datasets: [{
+                            label: 'Temperature',
+                            borderColor: 'rgb(75, 192, 192)',
+                            data: temperatureData,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: [{
+                                type: 'linear',
+                                position: 'bottom'
+                            }]
+                        }
+                    }
+                });
             });
         });
     </script>
