@@ -41,7 +41,7 @@
             var dummyData = {
                 timestamps: [1, 2, 3, 4, 5],
                 temperatures: [20, 22, 25, 18, 23],
-                wind: [10, 12, 15, 8, 13],
+                wind: [5, 10, 15, 8, 13],
                 visibility: [1000, 800, 1200, 900, 1100],
                 cloud: [50, 60, 40, 70, 55],
                 humidity: [75, 80, 70, 85, 78],
@@ -68,21 +68,20 @@
             var longitude = dummyData.longitude;
             var utc_time = dummyData.utc_time;
 
-            // Create a line chart for temperature, wind, visibility, and cloud
-            createLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud, 'Temperature (K)', 'Wind Speed (m/s)', 'Visibility (m)', 'Cloud (%)');
+            createLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, 'Temperature (K)', 'Wind Speed (m/s)', 'Visibility (m)', '');
 
             // Create a bar chart for humidity, pressure, and rain
-            createBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain, 'Humidity (%)', 'Pressure (hPa)', 'Rain (mm)');
+            createBarChart('pressureChart', 'Meteorological Data', timestamps, pressure, 'Pressure (hPa)');
 
             // Create stacked area chart for cloud and humidity
-            createCloudHumidityChart('cloudChart', 'Cloud and Humidity Area Chart', timestamps, cloud, humidity, 'Cloud (%)', 'Humidity (%)');
+            createCloudHumidityChart('cloudChart', 'Cloud and Humidity Area Chart', timestamps, cloud, humidity, rain, 'Cloud (%)', 'Humidity (%)', 'Rain (mm)');
 
             // Update location container with longitude, latitude, and UTC time
             updateLocationContainer(longitude, latitude);
         });
 
         // Function to create a Highcharts line chart
-        function createLineChart(containerId, title, categories, temperatures, wind, visibility, cloud, tempUnit, windUnit, visUnit, cloudUnit) {
+        function createLineChart(containerId, title, categories, temperatures, wind, visibility, tempUnit, windUnit, visUnit) {
             Highcharts.chart(containerId, {
                 chart: {
                     type: 'line',
@@ -110,12 +109,7 @@
                         text: 'Visibility (m)'
                     },
                     opposite: true
-                }, {
-                    title: {
-                        text: 'Cloud (%)'
-                    },
-                    opposite: true
-                }],
+                },],
                 series: [{
                     name: 'Temperature',
                     data: temperatures,
@@ -137,19 +131,12 @@
                     tooltip: {
                         valueSuffix: ' ' + visUnit
                     }
-                }, {
-                    name: 'Cloud',
-                    data: cloud,
-                    yAxis: 3,
-                    tooltip: {
-                        valueSuffix: ' ' + cloudUnit
-                    }
-                }]
+                },]
             });
         }
 
         // Function to create a Highcharts combined bar chart
-        function createBarChart(containerId, title, categories, humidity, pressure, rain, humUnit, pressUnit, rainUnit) {
+        function createBarChart(containerId, title, categories, pressure, pressUnit) {
             Highcharts.chart(containerId, {
                 chart: {
                     type: 'bar',
@@ -165,46 +152,23 @@
                 },
                 yAxis: [{
                     title: {
-                        text: 'Humidity (%)'
-                    }
-                }, {
-                    title: {
                         text: 'Pressure (hPa)'
-                    },
-                    opposite: true
-                }, {
-                    title: {
-                        text: 'Rain (mm)'
                     },
                     opposite: true
                 }],
                 series: [{
-                    name: 'Humidity',
-                    data: humidity,
-                    yAxis: 0,
-                    tooltip: {
-                        valueSuffix: ' ' + humUnit
-                    }
-                }, {
                     name: 'Pressure',
                     data: pressure,
-                    yAxis: 1,
+                    yAxis: 0,
                     tooltip: {
                         valueSuffix: ' ' + pressUnit
-                    }
-                }, {
-                    name: 'Rain',
-                    data: rain,
-                    yAxis: 2,
-                    tooltip: {
-                        valueSuffix: ' ' + rainUnit
                     }
                 }]
             });
         }
 
         // Function to create a Highcharts cloud and humidity bar chart
-        function createCloudHumidityChart(containerId, title, categories, humidity, cloud, humUnit, cloudUnit) {
+        function createCloudHumidityChart(containerId, title, categories, humidity, cloud, rain, humUnit, cloudUnit, rainUnit) {
             Highcharts.chart(containerId, {
                 chart: {
                     type: 'column',
@@ -228,6 +192,11 @@
                         text: 'Cloud (%)'
                     },
                     
+                }, {
+                    title: {
+                        text: 'Rain (%)'
+                    },
+                    
                 }],
                 series: [{
                     name: 'Humidity',
@@ -243,8 +212,15 @@
                     tooltip: {
                         valueSuffix: ' ' + cloudUnit
                     }
-                }],
-
+                },
+                {
+                    name: 'Rain',
+                    data: rain,
+                    yAxis: 2,
+                    tooltip: {
+                        valueSuffix: ' ' + rainUnit
+                    }
+                }]
                 
             
                 
@@ -262,8 +238,8 @@
         // Update chart position when the window is resized
         $(window).resize(function () {
             createLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud, 'Temperature (K)', 'Wind Speed (m/s)', 'Visibility (m)', 'Cloud (%)');
-            createBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain, 'Humidity (%)', 'Pressure (hPa)', 'Rain (mm)');
-            createCloudHumidityChart('cloudChart', 'Cloud and Humidity Area Chart', timestamps, cloud, humidity, 'Cloud (%)', 'Humidity (%)');
+            createBarChart('humidityChart', 'Meteorological Data', timestamps, pressure, 'Pressure (hPa)');
+            createCloudHumidityChart('cloudChart', 'Cloud and Humidity Area Chart', timestamps, cloud, humidity, rain, 'Cloud (%)', 'Humidity (%)', 'Rain (mm)');
         });
     </script>
 </body>
