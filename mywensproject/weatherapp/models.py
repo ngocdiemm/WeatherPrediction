@@ -12,4 +12,3 @@ class Weather(models.Model):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     utc_time = models.DateTimeField(null=True, blank=True)
-    created = models.DateTimeField(auto_now_add=True)

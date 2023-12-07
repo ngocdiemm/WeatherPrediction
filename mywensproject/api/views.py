@@ -18,5 +18,5 @@ def postData(request):
         serializer.save()
 
     #return Response(request, 'index.html',{'data': serializer.data})
-    return render(request, './templates/index.html', {'data': serializer.data})
+    return render(request, './teamplates/index.html', {'data': serializer.data})
     

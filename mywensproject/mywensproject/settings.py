@@ -56,7 +56,7 @@ ROOT_URLCONF = 'mywensproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': ['web'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
