@@ -80,6 +80,9 @@
                 // Create a bar chart for humidity, pressure, and rain
                 createBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain, 'Humidity (%)', 'Pressure (hPa)', 'Rain (mm)');
 
+                // Create stacked area chart for cloud and humidity
+                createStackedAreaChart('cloudHumidityChart', 'Cloud and Humidity Area Chart', timestamps, cloud, humidity, 'Cloud (%)', 'Humidity (%)');
+
                 // Update location container with longitude, latitude, and UTC time
                 updateLocationContainer(longitude, latitude, utc_time);
             //}
@@ -207,6 +210,48 @@
             });
         }
 
+         // Function to create a Highcharts stacked area chart
+function createStackedAreaChart(containerId, title, categories, humidity, cloud, humUnit, cloudUnit) {
+    Highcharts.chart(containerId, {
+        chart: {
+            type: 'area',
+            width: $(window).width() * 2 / 3 // Set the chart width to two-thirds of the screen width
+        },
+        title: {
+            text: title
+        },
+        xAxis: {
+            categories: categories.map(function (timestamp) {
+                return new Date(timestamp * 1000).toLocaleString();
+            })
+        },
+        yAxis: {
+            title: {
+                text: 'Values'
+            }
+        },
+        plotOptions: {
+            area: {
+                stacking: 'normal'
+            }
+        },
+        series: [{
+            name: 'Humidity',
+            data: humidity,
+            tooltip: {
+                valueSuffix: ' ' + humUnit
+            }
+        }, {
+            name: 'Cloud',
+            data: cloud,
+            tooltip: {
+                valueSuffix: ' ' + cloudUnit
+            }
+        }]
+    });
+}
+
+
         // Function to update location container with longitude, latitude, and UTC time
         function updateLocationContainer(longitude, latitude, utcTime) {
             $("#locationContainer p:nth-child(1) span").text(": " + longitude.toFixed(2)); // Display longitude
@@ -216,8 +261,9 @@
 
         // Update chart position when the window is resized
         $(window).resize(function () {
-            createCombinedLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud, 'Temperature (K)', 'Wind Speed (m/s)', 'Visibility (m)', 'Cloud (%)');
-            createCombinedBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain, 'Humidity (%)', 'Pressure (hPa)', 'Rain (mm)');
+            createLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud, 'Temperature (K)', 'Wind Speed (m/s)', 'Visibility (m)', 'Cloud (%)');
+            createBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain, 'Humidity (%)', 'Pressure (hPa)', 'Rain (mm)');
+            createStackedAreaChart('cloudChart', 'Cloud and Humidity Area Chart', timestamps, cloud, humidity, 'Cloud (%)', 'Humidity (%)');
         });
     </script>
 </body>
