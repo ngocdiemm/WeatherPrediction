@@ -16,7 +16,6 @@
     <div class="chart-container" id="locationContainer">
         <p><strong>Longitude:</strong> <span></span></p>
         <p><strong>Latitude:</strong> <span></span></p>
-        <p><strong>UTC Time:</strong> <span></span></p>
     </div>
     <div class="chart-container" id="temperatureChart"></div>
     <div class="chart-container" id="windChart"></div>
@@ -75,11 +74,11 @@
                 var longitude = dummyData.longitude;
                 var utc_time = dummyData.utc_time;
 
-                // Create a combined line chart for temperature, wind, visibility, and cloud
-                createCombinedLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud, 'Temperature (K)', 'Wind Speed (m/s)', 'Visibility (m)', 'Cloud (%)');
+                // Create a line chart for temperature, wind, visibility, and cloud
+                createLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud, 'Temperature (K)', 'Wind Speed (m/s)', 'Visibility (m)', 'Cloud (%)');
 
-                // Create a combined bar chart for humidity, pressure, and rain
-                createCombinedBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain, 'Humidity (%)', 'Pressure (hPa)', 'Rain (mm)');
+                // Create a bar chart for humidity, pressure, and rain
+                createBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain, 'Humidity (%)', 'Pressure (hPa)', 'Rain (mm)');
 
                 // Update location container with longitude, latitude, and UTC time
                 updateLocationContainer(longitude, latitude, utc_time);
@@ -87,7 +86,7 @@
         });
 
         // Function to create a Highcharts line chart
-        function createCombinedLineChart(containerId, title, categories, temperatures, wind, visibility, cloud, tempUnit, windUnit, visUnit, cloudUnit) {
+        function createLineChart(containerId, title, categories, temperatures, wind, visibility, cloud, tempUnit, windUnit, visUnit, cloudUnit) {
             Highcharts.chart(containerId, {
                 chart: {
                     type: 'line',
@@ -154,7 +153,7 @@
         }
 
         // Function to create a Highcharts combined bar chart
-        function createCombinedBarChart(containerId, title, categories, humidity, pressure, rain, humUnit, pressUnit, rainUnit) {
+        function createBarChart(containerId, title, categories, humidity, pressure, rain, humUnit, pressUnit, rainUnit) {
             Highcharts.chart(containerId, {
                 chart: {
                     type: 'bar',
