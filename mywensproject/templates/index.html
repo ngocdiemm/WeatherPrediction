@@ -39,46 +39,51 @@
                     $(this).parent().find("span").text(": " + featureValue);
                 });
             }
+            //const apiUrl = "{}";
+            //$.post(apiUrl, function (data)) {
 
-            // Dummy data for testing
-            var dummyData = {
-                timestamps: [1, 2, 3, 4, 5],
-                temperatures: [20, 22, 25, 18, 23],
-                wind: [10, 12, 15, 8, 13],
-                visibility: [1000, 800, 1200, 900, 1100],
-                cloud: [50, 60, 40, 70, 55],
-                humidity: [75, 80, 70, 85, 78],
-                pressure: [1015, 1010, 1020, 1005, 1018],
-                rain: [0, 0, 5, 2, 0],
-                longitude: 10.99,
-                latitude: 44.34,
-                utc_time: [1661870592, 1661874592, 1661878592, 1661882592, 1661886592]
-            };
+                //print(data)
 
-            // Update weather data on the page
-            updateWeatherData(dummyData);
+                // Dummy data for testing
+                var dummyData = {
+                    timestamps: [1, 2, 3, 4, 5],
+                    temperatures: [20, 22, 25, 18, 23],
+                    wind: [10, 12, 15, 8, 13],
+                    visibility: [1000, 800, 1200, 900, 1100],
+                    cloud: [50, 60, 40, 70, 55],
+                    humidity: [75, 80, 70, 85, 78],
+                    pressure: [1015, 1010, 1020, 1005, 1018],
+                    rain: [0, 0, 5, 2, 0],
+                    longitude: 10.99,
+                    latitude: 44.34,
+                    utc_time: [1661870592, 1661874592, 1661878592, 1661882592, 1661886592]
+                };
 
-            // Extract data for each feature
-            var timestamps = dummyData.timestamps;
-            var temperatures = dummyData.temperatures;
-            var wind = dummyData.wind;
-            var visibility = dummyData.visibility;
-            var cloud = dummyData.cloud;
-            var humidity = dummyData.humidity;
-            var pressure = dummyData.pressure;
-            var rain = dummyData.rain;
-            var latitude = dummyData.latitude;
-            var longitude = dummyData.longitude;
-            var utc_time = dummyData.utc_time;
+                // Update weather data on the page
+                updateWeatherData(dummyData);
 
-            // Create a combined line chart for temperature, wind, visibility, and cloud
-            createCombinedLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud, 'Temperature (K)', 'Wind Speed (m/s)', 'Visibility (m)', 'Cloud (%)');
+                // Extract data for each feature
+                var timestamps = dummyData.timestamps;
+                var temperatures = dummyData.temperatures;
+                var wind = dummyData.wind;
+                var visibility = dummyData.visibility;
+                var cloud = dummyData.cloud;
+                var humidity = dummyData.humidity;
+                var pressure = dummyData.pressure;
+                var rain = dummyData.rain;
+                var latitude = dummyData.latitude;
+                var longitude = dummyData.longitude;
+                var utc_time = dummyData.utc_time;
 
-            // Create a combined bar chart for humidity, pressure, and rain
-            createCombinedBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain, 'Humidity (%)', 'Pressure (hPa)', 'Rain (mm)');
+                // Create a combined line chart for temperature, wind, visibility, and cloud
+                createCombinedLineChart('temperatureChart', 'Meteorological Data', timestamps, temperatures, wind, visibility, cloud, 'Temperature (K)', 'Wind Speed (m/s)', 'Visibility (m)', 'Cloud (%)');
 
-            // Update location container with longitude, latitude, and UTC time
-            updateLocationContainer(longitude, latitude, utc_time);
+                // Create a combined bar chart for humidity, pressure, and rain
+                createCombinedBarChart('humidityChart', 'Meteorological Data', timestamps, humidity, pressure, rain, 'Humidity (%)', 'Pressure (hPa)', 'Rain (mm)');
+
+                // Update location container with longitude, latitude, and UTC time
+                updateLocationContainer(longitude, latitude, utc_time);
+            //}
         });
 
         // Function to create a Highcharts line chart
@@ -92,7 +97,9 @@
                     text: title + ' Line Chart'
                 },
                 xAxis: {
-                    categories: categories
+                    categories: categories.map(function(timestamp) {
+                        return new Date(timestamp * 1000).toLocaleString();
+                    })
                 },
                 yAxis: [{
                     title: {
@@ -157,7 +164,9 @@
                     text: title + ' Bar Chart'
                 },
                 xAxis: {
-                    categories: categories
+                    categories: categories.map(function(timestamp) {
+                        return new Date(timestamp * 1000).toLocaleString();
+                    })
                 },
                 yAxis: [{
                     title: {

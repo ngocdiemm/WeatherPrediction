@@ -16,6 +16,7 @@ def postData(request):
     serializer = ItemSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+
     #return Response(request, 'index.html',{'data': serializer.data})
-    return render(request, 'index.html', {'data': serializer.data})
+    return render(request, './templates/index.html', {'data': serializer.data})
     
